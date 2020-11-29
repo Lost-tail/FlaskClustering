@@ -1,0 +1,31 @@
+{%extends "base.html"%}
+{%block title%}Метод {{ method }}{%endblock%}
+{%block head%}{{super()}}{%endblock%}
+{%block page_content%}
+<div class="page-header">
+	<h1>Сравнение методов</h1>
+</div>
+<div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+				<th></th>
+				<th>K-Means</th>
+				<th>DBSCAN</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+				<td>Количество кластеров</td>
+				<td>{{ number1 }}</td>
+				<td>{{ number2 }} </td>
+            </tr>
+			<tr>
+				<td>Оценка качества(силуэт)</td>
+				<td>{{ index1 }}</td>
+				<td>{{ index2 }} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+{%endblock%}

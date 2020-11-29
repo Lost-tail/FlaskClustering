@@ -28,27 +28,4 @@
           </tbody>
         </table>
       </div>
-<h2>Характеристики полученных кластеров</h2>
-<div class="table-responsive">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-				<th>Номер кластера</th>
-				{% for header in headers %}
-				<th>{{ header }} </th>
-				{% endfor %}
-            </tr>
-          </thead>
-          <tbody>
-			{% for cluster in clusters %}
-            <tr>
-				
-				{% for param in cluster %}
-				<td>{{ param }} </td>
-				{% endfor %}
-            </tr>
-			{% endfor %}
-          </tbody>
-        </table>
-      </div>
 {%endblock%}

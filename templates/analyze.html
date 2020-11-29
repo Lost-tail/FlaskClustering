@@ -1,0 +1,17 @@
+{%extends "base.html"%}
+{%block title%}{%endblock%}
+{%block head%}{{super()}}{%endblock%}
+{%block page_content%}
+<div class="page-header">
+	<h1>Анализ результатов</h1>
+</div>
+<div>
+<a href="/average_params" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" style="margin:10px">Анализ отдельных показателей</a>
+</div>
+<div>
+<a href="/subject_params" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" style="margin:10px">Анализ отдельных субъектов</a>
+</div>
+<div>
+<a href="/cluster_params" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" style="margin:10px">Анализ кластеров</a>
+</div>
+{%endblock%}
