@@ -5,6 +5,8 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler
 import matplotlib.pyplot as plt
 from sklearn.neighbors import NearestNeighbors
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 
 class Analyzation():
     def __init__(self,direct='data/'):
@@ -74,7 +76,7 @@ class Analyzation():
             i+=1
     def aver_pict2(self):
         i=0
-        for x in self.aver_param.columns[:-2]:
+        for x in self.aver_param.columns[:-1]:
             data2 = self.pure_data[-1]
             data2['Регион']=self.data[-1]['Регион']
             data2 = data2.sort_values(by=x,ascending=False)
@@ -87,6 +89,36 @@ class Analyzation():
             fig.savefig('static/figures/'+'aver_2{}.png'.format(i))
             plt.close()
             i+=1
+    def subj_param(self,active_param):
+        ind = list(self.data[-1]['Регион']).index(active_param)
+        i=0
+        for param in self.aver_param.columns[:-1]:
+            data = []
+            for year in self.pure_data:
+                data.append(float(year.at[ind,param]))
+            fig,ax= plt.subplots(figsize=(15,6))
+            plt.plot([i for i in range(2010,2019)], data, color='firebrick')
+            plt.title(param)
+            plt.xticks(rotation=60, horizontalalignment='right',fontsize=8)
+            fig.savefig('static/figures/subjects/{}{}.png'.format(active_param,i))
+            plt.close()
+            i+=1
+    def clust_numb(self,active_param):
+        ind = list(self.data[-1]['Регион']).index(active_param)
+        data=[]
+        for year in self.data:
+                data.append(float(year.at[ind,'k-means']))
+        fig,ax= plt.subplots(figsize=(15,6))
+        plt.plot([i for i in range(2010,2019)], data, color='firebrick')
+        plt.xticks(rotation=60, horizontalalignment='right',fontsize=8)
+        fig.savefig('static/figures/subjects/clust_numb{}.png'.format(active_param))
+"""     
+Test = Analyzation()
+Test.k_means()
+Test.dbscan()
+#print(type(Test.data[-1].get('Регион')))
+Test.subj_param(Test.data[-1]['Регион'][1])
+"""
 """
 #print(Test.data[0],Test.index['k-means'])
 data = pd.read_csv('data/2018.csv', sep=';',encoding='ANSI',lineterminator='\n').dropna(thresh=3).fillna(0)

@@ -4,7 +4,7 @@ from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms import SubmitField
 from Methods.analyze import Analyzation
-        
+from multiprocessing import Process        
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'supersecret'
@@ -14,6 +14,7 @@ Analyze = Analyzation()
 Analyze.k_means()
 Analyze.dbscan()
 Analyze.create_pictures()
+
 class K_MeansForm(FlaskForm):
     submit1 = SubmitField('K_Means')
 class DbscanForm(FlaskForm):
@@ -35,6 +36,7 @@ def start_page():
     if button3.submit3.data:
         return redirect(url_for('sting_method'))
     return render_template('start_page.html',form1=button1,form2=button2,form3=button3)
+    
 
 @app.route('/sting',methods=['GET'])   
 def sting_method():
@@ -101,7 +103,14 @@ def average_params():
     
 @app.route('/subject_params',methods=['GET','POST']) 
 def subject_params():
-    return render_template('subject_params.html')
+    params = Analyze.data[-1]['Регион']
+    active_param = request.args.get('active_param')
+    if active_param:
+        Analyze.subj_param(active_param)
+        Analyze.clust_numb(active_param)
+    img2 = 'figures/subjects/clust_numb{}.png'.format(active_param)
+    imgs = ['figures/subjects/{}{}.png'.format(active_param,i) for i in range(len(Analyze.aver_param.columns[:-1]))]
+    return render_template('subject_params.html',params=params,active_param=active_param,imgs=imgs,img2=img2)
     
 @app.route('/cluster_params',methods=['GET','POST']) 
 def cluster_params():
@@ -126,6 +135,5 @@ def interpretation(x):
         return 'выше среднего'
     else:
         return 'высокий'
-        
 if __name__=='__main__':
 	app.run(debug=True)
