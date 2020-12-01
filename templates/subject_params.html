@@ -20,7 +20,7 @@
     </div>
 	{% for img in imgs[1:] %}
     <div class="carousel-item">
-      <img src="{{ url_for('static', filename = img ) }}" class="d-block w-100" alt='ok'>
+      <img src="{{ url_for('static', filename = img ) }}" class="d-block w-100" alt='Выберите субъект'>
     </div>
 	{% endfor %}
   </div>
@@ -34,5 +34,5 @@
   </a>
 </div>
 <h2 class='text-center'>Изменение кластера по годам</h2>
-<img src="{{ url_for('static', filename = img2 ) }}" class="img-fluid" alt="Responsive image">
+<img src="{{ url_for('static', filename = img2 ) }}" class="img-fluid" alt="">
 {% endblock %}

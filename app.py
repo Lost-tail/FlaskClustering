@@ -46,6 +46,8 @@ def sting_method():
 def dbscan_method():
     headers = Analyze.data[-1].columns[1:16]
     index = Analyze.index['dbscan'][-1]
+    Analyze.vis_dbscan()
+    imgs = ['figures/visualization/dbscan201{}.png'.format(i) for i in range(9)]
     years = [ i for i in range(2010,2019)]
     subj_numb =[[x-1]+[0]*(len(years)) for x in range(len(Analyze.data[-1].groupby('dbscan')))]
     for j in range(len(years)):
@@ -53,11 +55,13 @@ def dbscan_method():
         for x in Analyze.data[j].groupby('dbscan'):
             subj_numb[i][j+1] = len(x[1])
             i+=1
-    return render_template('dbscan.html', method='DBSCAN',subj_numb=subj_numb,index=index,years=years)
+    return render_template('dbscan.html', method='DBSCAN',subj_numb=subj_numb,index=index,years=years,imgs=imgs)
 
 @app.route('/k_means',methods=['GET'])     
 def k_means_method():
     headers = Analyze.data[-1].columns[1:16]
+    Analyze.vis_k_means()
+    imgs = ['figures/visualization/k-means201{}.png'.format(i) for i in range(9)]
     #clusters_centers=[]
     clusters_center1=[]
     i=0
@@ -79,7 +83,7 @@ def k_means_method():
         for x in Analyze.data[j].groupby('k-means'):
             subj_numb[i][j+1] = len(x[1])
             i+=1
-    return render_template('base_overall.html', method='K_Means',headers=headers,clusters=cl1,index=index,years=years,subj_numb=subj_numb)
+    return render_template('base_overall.html', method='K_Means',headers=headers,clusters=cl1,index=index,years=years,subj_numb=subj_numb,imgs=imgs)
 
 @app.route('/compare',methods=['GET'])  
 def compare():
@@ -114,7 +118,11 @@ def subject_params():
     
 @app.route('/cluster_params',methods=['GET','POST']) 
 def cluster_params():
-    return render_template('cluster_params.html')
+    clust_numb = int(request.args.get('clust_numb'))
+    if clust_numb or clust_numb==0:
+        Analyze.clust_power(clust_numb)
+    img = 'figures/clusters/clust_power{}.png'.format(clust_numb)
+    return render_template('cluster_params.html',clusters=[i for i in range(6)],img=img)
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -135,5 +143,6 @@ def interpretation(x):
         return 'выше среднего'
     else:
         return 'высокий'
+        
 if __name__=='__main__':
 	app.run(debug=True)

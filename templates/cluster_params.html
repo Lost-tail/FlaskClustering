@@ -1,0 +1,16 @@
+{%extends "base.html"%}
+{%block title%}{%endblock%}
+{%block head%}{{super()}}{%endblock%}
+{%block page_content%}
+<div class="page-header">
+	<h1 class='text-center'>Анализ результатов</h1>
+</div>
+<div>
+	{% for clust in clusters %}
+	<form method="GET" class='d-inline'>
+	<input type="submit" class="btn btn-outline-dark" name="clust_numb" text='Кластер №{{ clust }}' value="{{ clust }}">
+	</form>
+	{% endfor %}
+</div>
+<img src="{{ url_for('static', filename = img ) }}" class="img-fluid" alt="Выберите кластер">
+{% endblock %}

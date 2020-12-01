@@ -2,9 +2,11 @@ import pandas as pd
 from sklearn import metrics
 from sklearn.cluster import KMeans, DBSCAN
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
 from sklearn.neighbors import NearestNeighbors
 import numpy as np
+from multiprocessing import Process
 import matplotlib
 matplotlib.use('Agg')
 
@@ -61,13 +63,10 @@ class Analyzation():
     def aver_pict(self):
         i=0
         for x in self.aver_param.columns[:-1]:
-
             data = self.aver_param.sort_values(by=x,ascending=False)
             fig, ax = plt.subplots(figsize=(14,7))
             plt.vlines(x=data['Регион'], ymin=0, ymax=data[x], color='firebrick', alpha=0.7, linewidth=7)
             plt.title(x)
-            #for j,param in enumerate(data[x]):
-                #plt.text(j,param+0.5,round(param),horizontalalignment='center')
             plt.xticks(rotation=60, horizontalalignment='right',fontsize=8)
             ax.set_box_aspect(0.3)
             ax.set_anchor('N')
@@ -112,24 +111,38 @@ class Analyzation():
         plt.plot([i for i in range(2010,2019)], data, color='firebrick')
         plt.xticks(rotation=60, horizontalalignment='right',fontsize=8)
         fig.savefig('static/figures/subjects/clust_numb{}.png'.format(active_param))
-"""     
-Test = Analyzation()
-Test.k_means()
-Test.dbscan()
-#print(type(Test.data[-1].get('Регион')))
-Test.subj_param(Test.data[-1]['Регион'][1])
-"""
-"""
-#print(Test.data[0],Test.index['k-means'])
-data = pd.read_csv('data/2018.csv', sep=';',encoding='ANSI',lineterminator='\n').dropna(thresh=3).fillna(0)
-scaler = MinMaxScaler()
-X = scaler.fit_transform(data.drop('Регион',1))
-km = KMeans(n_clusters = 6,random_state  = 1)
-algo = km.fit(X)
-data['cluster'] = algo.labels_
-#print(data)
-index = metrics.silhouette_score(X, algo.labels_)
-#plt.xticks(rotation=90)
-#plt.scatter(data['Регион'],X.mean(axis=1), c = algo.labels_)
-#plt.savefig('test.png')
-"""
+        plt.close()
+    def clust_power(self,clust_numb):
+        data=[]
+        for year in self.data:
+            data.append(year.groupby('k-means').size()[clust_numb])
+        fig,ax= plt.subplots(figsize=(15,6))
+        plt.plot([i for i in range(2010,2019)], data, color='firebrick')
+        plt.xticks(rotation=60, horizontalalignment='right',fontsize=8)
+        plt.title("Кластер №{}".format(clust_numb))
+        fig.savefig('static/figures/clusters/clust_power{}.png'.format(clust_numb))
+        plt.close()
+    def vis_k_means(self):
+        i=0
+        for year in self.X:
+            tsne = TSNE(random_state=13)
+            tsne_repr = tsne.fit_transform(year)
+            fig,ax= plt.subplots(figsize=(15,6))
+            plt.scatter(tsne_repr[:,0],tsne_repr[:,1],c=self.data[i]['k-means'].map({0:'b',1:'g',2:'y',3:'k',4:'r',5:'m'}))
+            plt.title("Распределение кластеров в 201{} году".format(i))
+            fig.savefig('static/figures/visualization/k-means201{}.png'.format(i))
+            plt.close()
+            i+=1
+    def vis_dbscan(self):
+        i=0
+        for year in self.X:
+            tsne = TSNE(random_state=13)
+            tsne_repr = tsne.fit_transform(year)
+            fig,ax= plt.subplots(figsize=(15,6))
+            plt.scatter(tsne_repr[:,0],tsne_repr[:,1],c=self.data[i]['dbscan'].map({0:'b',1:'g',2:'y',3:'k',4:'r',-1:'m'}))
+            plt.title("Распределение кластеров в 201{} году".format(i))
+            fig.savefig('static/figures/visualization/dbscan201{}.png'.format(i))
+            plt.close()
+            i+=1
+            
+
