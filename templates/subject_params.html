@@ -13,13 +13,13 @@
 	{% endfor %}
 </div>
 <h2 class='text-center'>{{ active_param }}</h2>
-<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+<div id="carouselExampleControls" class="carousel slide">
   <div class="carousel-inner">
-    <div class="carousel-item active">
+    <div class="carousel-item active" data-interval="500000">
       <img src="{{ url_for('static', filename =  imgs[0]) }}" class="d-block w-100" alt='ok'>
     </div>
 	{% for img in imgs[1:] %}
-    <div class="carousel-item">
+    <div class="carousel-item" data-interval="500000">
       <img src="{{ url_for('static', filename = img ) }}" class="d-block w-100" alt='Выберите субъект'>
     </div>
 	{% endfor %}

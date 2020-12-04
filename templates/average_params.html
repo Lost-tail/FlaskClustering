@@ -6,13 +6,13 @@
 	<h1 class='text-center'>Анализ результатов</h1>
 </div>
 <h2 class='text-center'>Средние значения показателей субъектов за 10 лет</h2>
-<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+<div id="carouselExampleControls" class="carousel slide">
   <div class="carousel-inner">
-    <div class="carousel-item active">
+    <div class="carousel-item active" data-interval="500000">
       <img src="{{ url_for('static', filename =  imgs1[0]) }}" class="d-block w-100" alt='ok'>
     </div>
 	{% for img1 in imgs1[1:] %}
-    <div class="carousel-item">
+    <div class="carousel-item" data-interval="500000">
       <img src="{{ url_for('static', filename = img1 ) }}" class="d-block w-100" alt='ok'>
     </div>
 	{% endfor %}
@@ -27,22 +27,22 @@
   </a>
 </div>
 <h2 class='text-center'>Рейтинг субъектов за последний год</h2>
-<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+<div id="carouselExampleControls2" class="carousel slide">
   <div class="carousel-inner">
-    <div class="carousel-item active">
+    <div class="carousel-item active" data-interval="500000">
       <img src="{{ url_for('static', filename =  imgs2[0]) }}" class="d-block w-100" alt='ok'>
     </div>
 	{% for img2 in imgs2[1:] %}
-    <div class="carousel-item">
+    <div class="carousel-item" data-interval="500000">
       <img src="{{ url_for('static', filename = img2 ) }}" class="d-block w-100" alt='ok'>
     </div>
 	{% endfor %}
   </div>
-  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+  <a class="carousel-control-prev" href="#carouselExampleControls2" role="button" data-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="sr-only">Previous</span>
   </a>
-  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+  <a class="carousel-control-next" href="#carouselExampleControls2" role="button" data-slide="next">
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="sr-only">Next</span>
   </a>
